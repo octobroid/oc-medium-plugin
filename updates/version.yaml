@@ -1,0 +1,4 @@
+1.0.1:
+    - Initialize plugin Octobro Medium Blog.
+    - add_source_by_in_posts_table.php
+    - add_creator_in_posts_table.php

@@ -1,0 +1,8 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+    username:
+        label: Username / Channel
+        comment: for username, use @ prefix
