@@ -4,6 +4,7 @@ use Backend;
 use Event;
 use Octobro\MediumBlog\Models\Settings as MediumSettings;
 use RainLab\Blog\Controllers\Posts as RainLabPostsController;
+use RainLab\Blog\Models\Post;
 use System\Classes\PluginBase;
 
 /**
@@ -46,6 +47,17 @@ class Plugin extends PluginBase
      */
     public function boot()
     {
+        Post::extend(function($model) {
+            $model->addDynamicMethod('getMediumImageAttribute', function() use ($model) {
+                if($model->source_by == 'medium') {
+                    $texthtml = $model->content_html;
+                    preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $texthtml, $image);
+                    return $image[1];
+                }
+                return;
+            });
+        });
+
         RainLabPostsController::extendListFilterScopes(function($filter) {
             $filter->addScopes([
                 'medium_blog' => [
@@ -78,7 +90,7 @@ class Plugin extends PluginBase
         $medium_link = 'https://medium.com/feed/'.MediumSettings::get('username');
 
         $schedule->call(function () use($medium_link){
-            Queue::push('Octobro\MediumBlog\Jobs\FetchPosts', ['link' => $medium_link]);
-        })->daily();
+            \Queue::push('Octobro\MediumBlog\Jobs\FetchPosts', ['link' => $medium_link]);
+        })->everyMinute();
     }
 }

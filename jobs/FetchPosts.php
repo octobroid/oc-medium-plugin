@@ -3,12 +3,14 @@
 use Carbon\Carbon;
 use Octobro\MediumBlog\Helpers\XmlGenerator;
 use League\HTMLToMarkdown\HtmlConverter;
-use RainLab\Blog\Models\Post;
+use Octobro\MediumBlog\Models\Post;
 
 class FetchPosts
 {
     public function fire($job, $data)
     {
+        Post::whereSourceBy('medium')->delete();
+
         $link = array_get($data,'link');
 
         $xmlMediumFeed = simplexml_load_file($link);
@@ -48,8 +50,8 @@ class FetchPosts
         $post->creator      = $data['dc:creator'];
         $post->published_at = Carbon::parse($data['pubDate']);
         $post->published    = true;
-        $post->content_html = $data['content:encoded'];
         $post->content      = $this->markdownGenerator($data['content:encoded']);
+        $post->content_html = $data['content:encoded'];
         $post->title        = $data['title'];
         $post->slug         = str_slug($data['title']);
 
