@@ -1,2 +1,2 @@
-# oc-mediumblog-plugin
+# oc-medium-plugin
 Fetching Medium post to your own personal website
