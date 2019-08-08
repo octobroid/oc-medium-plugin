@@ -9,7 +9,6 @@ class FetchPosts
 {
     public function fire($job, $data)
     {
-        Post::whereSourceBy('medium')->delete();
 
         $link = array_get($data,'link');
 
@@ -21,6 +20,10 @@ class FetchPosts
             return;
         }
 
+        if(sizeof($mediumPosts) == $this->getPost()->count()){
+            $job->delete();
+            return;
+        }
 
         collect($mediumPosts)->each(function($post){
             $this->createPost($post);
@@ -29,6 +32,11 @@ class FetchPosts
         $job->delete();
         return;
 
+    }
+
+    protected function getPost()
+    {
+        return Post::whereSourceBy('medium')->get();
     }
 
     protected function xmlGenerator()
@@ -45,16 +53,18 @@ class FetchPosts
 
     public function createPost($data)
     {
-        $post = new Post;
-        $post->source_by    = 'medium';
-        $post->creator      = $data['dc:creator'];
-        $post->published_at = Carbon::parse($data['pubDate']);
-        $post->published    = true;
-        $post->content      = $this->markdownGenerator($data['content:encoded']);
-        $post->content_html = $data['content:encoded'];
-        $post->title        = $data['title'];
-        $post->slug         = str_slug($data['title']);
+        if(!in_array(str_slug($data['title']), $this->getPost()->pluck('slug')->toArray())){
+            $post = new Post;
+            $post->source_by    = 'medium';
+            $post->creator      = $data['dc:creator'];
+            $post->published_at = Carbon::parse($data['pubDate']);
+            $post->published    = true;
+            $post->content      = $this->markdownGenerator($data['content:encoded']);
+            $post->content_html = $data['content:encoded'];
+            $post->title        = $data['title'];
+            $post->slug         = str_slug($data['title']);
 
-        $post->save();
+            $post->save();
+        }
     }
 }
