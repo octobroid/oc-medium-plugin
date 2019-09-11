@@ -52,7 +52,8 @@ class Plugin extends PluginBase
                 if($model->source_by == 'medium') {
                     $texthtml = $model->content_html;
                     preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $texthtml, $image);
-                    return $image[1];
+                    $model->attributes['medium_image'] = $image[1]; 
+                    return $model->attributes['medium_image'];
                 }
                 return;
             });
