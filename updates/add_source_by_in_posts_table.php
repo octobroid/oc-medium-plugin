@@ -13,7 +13,7 @@ class AddSourceByInPostsTable extends Migration
 
         Schema::table('rainlab_blog_posts', function($table)
         {
-            $table->string('source_by')->nullable();
+            $table->string('octobro_medium_source_by')->nullable();
         });
     }
 
@@ -21,7 +21,7 @@ class AddSourceByInPostsTable extends Migration
     {
         if (Schema::hasColumn('rainlab_blog_posts', 'source_by')) {
             Schema::table('rainlab_blog_posts', function ($table) {
-                $table->dropColumn('source_by');
+                $table->dropColumn('octobro_medium_source_by');
             });
         }
     }

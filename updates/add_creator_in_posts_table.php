@@ -13,7 +13,7 @@ class AddCreatorInPostsTable extends Migration
 
         Schema::table('rainlab_blog_posts', function($table)
         {
-            $table->string('creator')->nullable();
+            $table->string('octobro_medium_creator')->nullable();
         });
     }
 
@@ -21,7 +21,7 @@ class AddCreatorInPostsTable extends Migration
     {
         if (Schema::hasColumn('rainlab_blog_posts', 'creator')) {
             Schema::table('rainlab_blog_posts', function ($table) {
-                $table->dropColumn('creator');
+                $table->dropColumn('octobro_medium_creator');
             });
         }
     }
