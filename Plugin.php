@@ -49,7 +49,7 @@ class Plugin extends PluginBase
     {
         Post::extend(function($model) {
             $model->addDynamicMethod('getMediumImageAttribute', function() use ($model) {
-                if($model->source_by == 'medium') {
+                if($model->octobro_medium_source_by == 'medium') {
                     $texthtml = $model->content_html;
                     preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $texthtml, $image);
                     $model->attributes['medium_image'] = $image[1]; 
@@ -64,7 +64,7 @@ class Plugin extends PluginBase
                 'medium_blog' => [
                     'label'      => 'Medium Post',
                     'type'       => 'checkbox',
-                    'conditions' => "source_by = 'medium'"
+                    'conditions' => "octobro_medium_source_by = 'medium'"
                 ]
             ]);
         });

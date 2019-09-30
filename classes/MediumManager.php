@@ -96,14 +96,14 @@ class MediumManager
         if(!in_array(str_slug($data['title']), $this->getPost()->pluck('slug')->toArray())){
             if(isset($data['content:encoded'])){
                 $post = new Post;
-                $post->source_by    = 'medium';
-                $post->creator      = $data['dc:creator'];
-                $post->published_at = Carbon::parse($data['pubDate']);
-                $post->published    = true;
-                $post->content      = $this->markdownGenerator($data['content:encoded']);
-                $post->content_html = $data['content:encoded'];
-                $post->title        = $data['title'];
-                $post->slug         = str_slug($data['title']);
+                $post->octobro_medium_source_by = 'medium';
+                $post->octobro_medium_creator   = $data['dc:creator'];
+                $post->published_at             = Carbon::parse($data['pubDate']);
+                $post->published                = true;
+                $post->content                  = $this->markdownGenerator($data['content:encoded']);
+                $post->content_html             = $data['content:encoded'];
+                $post->title                    = $data['title'];
+                $post->slug                     = str_slug($data['title']);
 
                 $post->save();
             }
