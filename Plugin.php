@@ -88,10 +88,8 @@ class Plugin extends PluginBase
 
     public function registerSchedule($schedule)
     {
-        $medium_link = 'https://medium.com/feed/'.MediumSettings::get('username');
-
-        $schedule->call(function () use($medium_link){
-            \Queue::push('Octobro\MediumBlog\Jobs\FetchPosts', ['link' => $medium_link]);
+        $schedule->call(function () {
+            \Queue::push('Octobro\MediumBlog\Jobs\FetchPosts');
         })->everyMinute();
     }
 }

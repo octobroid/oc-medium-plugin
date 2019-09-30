@@ -2,3 +2,4 @@
     - Initialize plugin Octobro Medium Blog.
     - add_source_by_in_posts_table.php
     - add_creator_in_posts_table.php
+1.0.2: Enhancement, fix various bug, Multiple Fetch Feed, Support Fetch Feed using Blog Medium Domain

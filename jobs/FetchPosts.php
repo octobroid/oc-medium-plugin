@@ -1,70 +1,17 @@
 <?php namespace Octobro\MediumBlog\Jobs;
 
-use Carbon\Carbon;
-use Octobro\MediumBlog\Helpers\XmlGenerator;
-use League\HTMLToMarkdown\HtmlConverter;
-use Octobro\MediumBlog\Models\Post;
+use Octobro\MediumBlog\Classes\MediumManager;
 
 class FetchPosts
 {
     public function fire($job, $data)
     {
 
-        $link = array_get($data,'link');
-
-        $xmlMediumFeed = simplexml_load_file($link);
-        $mediumPosts = data_get($this->xmlGenerator()->xmlToArray($xmlMediumFeed), 'rss.channel.item');
-
-        if(!$xmlMediumFeed || sizeof($mediumPosts) < 0){
-            $job->delete();
-            return;
-        }
-
-        if(sizeof($mediumPosts) == $this->getPost()->count()){
-            $job->delete();
-            return;
-        }
-
-        collect($mediumPosts)->each(function($post){
-            $this->createPost($post);
-        });
+        $medium = MediumManager::instance();
+        $medium->collectMedium();
 
         $job->delete();
         return;
 
-    }
-
-    protected function getPost()
-    {
-        return Post::whereSourceBy('medium')->get();
-    }
-
-    protected function xmlGenerator()
-    {
-        $generator = new XmlGenerator;
-        return $generator;
-    }
-
-    protected function markdownGenerator($html)
-    {
-        $converter = new HtmlConverter();
-        return $converter->convert($html);
-    }
-
-    public function createPost($data)
-    {
-        if(!in_array(str_slug($data['title']), $this->getPost()->pluck('slug')->toArray())){
-            $post = new Post;
-            $post->source_by    = 'medium';
-            $post->creator      = $data['dc:creator'];
-            $post->published_at = Carbon::parse($data['pubDate']);
-            $post->published    = true;
-            $post->content      = $this->markdownGenerator($data['content:encoded']);
-            $post->content_html = $data['content:encoded'];
-            $post->title        = $data['title'];
-            $post->slug         = str_slug($data['title']);
-
-            $post->save();
-        }
     }
 }

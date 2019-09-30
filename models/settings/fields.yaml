@@ -3,6 +3,11 @@
 # ===================================
 
 fields:
-    username:
+    sites:
+        label: Site
+        type: taglist
+        comment: just put the domain right here. ex; foobar.medium.com
+    accounts:
         label: Username / Channel
         comment: for username, use @ prefix
+        type: taglist
