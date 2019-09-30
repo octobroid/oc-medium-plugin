@@ -7,7 +7,7 @@ class AddCreatorInPostsTable extends Migration
 {
     public function up()
     {
-        if (Schema::hasColumn('rainlab_blog_posts', 'creator')) {
+        if (Schema::hasColumn('rainlab_blog_posts', 'octobro_medium_creator')) {
             return;
         }
 
@@ -19,7 +19,7 @@ class AddCreatorInPostsTable extends Migration
 
     public function down()
     {
-        if (Schema::hasColumn('rainlab_blog_posts', 'creator')) {
+        if (Schema::hasColumn('rainlab_blog_posts', 'octobro_medium_creator')) {
             Schema::table('rainlab_blog_posts', function ($table) {
                 $table->dropColumn('octobro_medium_creator');
             });
