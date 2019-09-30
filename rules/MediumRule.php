@@ -28,14 +28,18 @@ class MediumRule implements Rule
     {
         $result = [];
         $values = explode(',', $value);
-        foreach($values as $site){
-            foreach($params as $parameter){
-                if(strpos($site, $parameter) == false){
-                    $result[] = false;
+        if(strlen($value) > 0){
+            foreach($values as $site){
+                foreach($params as $parameter){
+                    if(strpos($site, $parameter) == false){
+                        $result[] = false;
+                    }
                 }
-            }
+            }    
+            return in_array(false, $result) ? false : true;
+        }else{
+            return true;
         }
-        return in_array(false, $result) ? false : true;
     }
 
     /**
