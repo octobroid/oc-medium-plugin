@@ -66,6 +66,7 @@ class MediumManager
 
     protected function fetchSitesLink()
     {
+        if(empty(MediumSettings::get('sites')))return [];
         $sites = explode(',', MediumSettings::get('sites'));
 
         return collect($sites)->map(function($site) {
