@@ -76,7 +76,7 @@ class MediumManager
 
     protected function getPost()
     {
-        return Post::whereSourceBy('medium')->get();
+        return Post::whereOctobroMediumSourceBy('medium')->get();
     }
 
     protected function xmlGenerator()
